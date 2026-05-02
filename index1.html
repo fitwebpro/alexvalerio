@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alex Valério — Consultoria Esportiva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #080b0f;
+      --bg-2:      #0d1117;
+      --bg-3:      #111720;
+      --surface:   #161d28;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #00e5ff;
+      --accent-2:  #0099cc;
+      --accent-dim:rgba(0,229,255,0.08);
+      --text:      #e8edf3;
+      --text-muted:#7a8796;
+      --white:     #ffffff;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--accent); color: var(--bg); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 2px; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(0,229,255,0.3);
+      padding: 6px 14px;
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      border: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover {
+      background: #33eeff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,229,255,0.25);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(0,229,255,0.4);
+    }
+    .btn-outline:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .divider { width: 48px; height: 2px; background: var(--accent); margin: 20px 0 32px; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      transition: all 0.35s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,11,15,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta { display: flex; gap: 12px; align-items: center; }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 24px; height: 2px;
+      background: var(--text); border-radius: 2px; transition: all 0.3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(8,11,15,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 24px;
+      z-index: 999;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1rem; font-weight: 500;
+      color: var(--text); text-decoration: none;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 140px 0 100px;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black, transparent);
+    }
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+    .hero-eyebrow-line { width: 40px; height: 1px; background: var(--accent); }
+    .hero-eyebrow span {
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent);
+    }
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.05;
+      margin-bottom: 28px; color: var(--white);
+    }
+    .hero-title .highlight { color: var(--accent); }
+    .hero-desc {
+      font-size: 1.15rem; color: var(--text-muted);
+      max-width: 520px; margin-bottom: 44px; line-height: 1.8;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 72px; }
+    .hero-stats {
+      display: flex; gap: 48px;
+      padding-top: 40px; border-top: 1px solid var(--border);
+    }
+    .hero-stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem; font-weight: 700;
+      color: var(--accent); line-height: 1; margin-bottom: 4px;
+    }
+    .hero-stat-label {
+      font-size: 0.8rem; color: var(--text-muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* SERVICES */
+    .services { padding: 120px 0; background: var(--bg-2); position: relative; }
+    .services::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.3;
+    }
+    .services-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: start; margin-bottom: 72px;
+    }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .service-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 36px 28px;
+      position: relative; overflow: hidden;
+      transition: all 0.3s ease; cursor: default;
+    }
+    .service-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent);
+      transform: scaleX(0); transition: transform 0.3s ease;
+      transform-origin: left;
+    }
+    .service-card:hover {
+      border-color: rgba(0,229,255,0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      width: 48px; height: 48px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,229,255,0.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px; font-size: 1.4rem;
+    }
+    .service-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem; font-weight: 600;
+      margin-bottom: 12px; color: var(--white);
+    }
+    .service-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; }
+    .service-number {
+      position: absolute; bottom: 20px; right: 24px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3.5rem; font-weight: 700;
+      color: rgba(255,255,255,0.03); line-height: 1;
+    }
+
+    /* ABOUT */
+    .about { padding: 120px 0; background: var(--bg); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-image-wrapper { position: relative; }
+    .about-image {
+      width: 100%; aspect-ratio: 4/5;
+      background: var(--surface); border-radius: 8px;
+      position: relative; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .about-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--accent); color: var(--bg);
+      border-radius: 8px; padding: 20px 24px; text-align: center;
+    }
+    .about-badge-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.5rem; font-weight: 700; line-height: 1; display: block;
+    }
+    .about-badge-text { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; }
+    .about-accent-line {
+      position: absolute; top: 20px; left: -20px;
+      width: 4px; height: 80px;
+      background: var(--accent); border-radius: 2px;
+    }
+    .credentials { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 36px; }
+    .credential {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px;
+      font-size: 0.85rem; display: flex; align-items: center; gap: 10px;
+    }
+    .credential-dot {
+      width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* PORTFOLIO */
+    .portfolio { padding: 120px 0; background: var(--bg-2); }
+    .portfolio-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-end; margin-bottom: 60px;
+    }
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .portfolio-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden; transition: all 0.3s ease;
+    }
+    .portfolio-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,229,255,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .portfolio-image {
+      height: 340px; background: var(--bg-3);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .portfolio-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(0,229,255,0.15); color: var(--accent);
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 2px;
+      border: 1px solid rgba(0,229,255,0.2);
+    }
+    .portfolio-info { padding: 24px; }
+    .portfolio-client {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600; color: var(--white); margin-bottom: 8px;
+    }
+    .portfolio-result { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+    .portfolio-metrics { display: flex; gap: 20px; }
+    .metric { display: flex; flex-direction: column; gap: 2px; }
+    .metric-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--accent);
+    }
+    .metric-label {
+      font-size: 0.7rem; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+/* CONTACT */
+.contact { padding: 120px 0; background: var(--bg-2); position: relative; }
+.contact::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.3;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-items { margin-top: 48px; display: flex; flex-direction: column; gap: 24px; }
+.contact-item { display: flex; align-items: flex-start; gap: 16px; }
+.contact-item-icon {
+  width: 44px; height: 44px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-item-title {
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 4px;
+}
+.contact-item-value { font-size: 0.95rem; color: var(--text); }
+.contact-form {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 48px;
+}
+.form-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.3rem; font-weight: 600;
+  margin-bottom: 32px; color: var(--white);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.form-label {
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);
+}
+.form-input, .form-select, .form-textarea {
+  background: var(--bg-3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 14px 16px;
+  font-size: 0.9rem; color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none; width: 100%;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+}
+.form-input::placeholder, .form-textarea::placeholder { color: rgba(122,135,150,0.5); }
+.form-select { appearance: none; cursor: pointer; }
+.form-textarea { resize: vertical; min-height: 120px; }
+.form-submit { width: 100%; padding: 16px; font-size: 0.95rem; margin-top: 8px; }
+.form-note {
+  text-align: center; font-size: 0.78rem;
+  color: var(--text-muted); margin-top: 16px;
+}
+.form-success { display: none; text-align: center; padding: 40px 20px; }
+.form-success.show { display: block; }
+.success-icon { font-size: 3rem; margin-bottom: 16px; }
+.success-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--accent); margin-bottom: 8px;
+}@gmail
+.success-text { color: var(--text-muted); font-size: 0.95rem; }
+    /* FOOTER */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 60px 0 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand p {
+      font-size: 0.9rem; color: var(--text-muted);
+      margin: 12px 0 24px; line-height: 1.7; max-width: 260px;
+    }
+
+    /* Instagram button no footer */
+    .instagram-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(220,39,67,0.35);
+    }
+    .instagram-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(220,39,67,0.5);
+    }
+    .instagram-btn svg {
+      width: 26px; height: 26px; fill: #fff; flex-shrink: 0;
+    }
+
+    .footer-col h4 {
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      font-size: 0.9rem; color: var(--text-muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--accent); }
+    .footer-bottom {
+      padding-top: 32px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 0.82rem; color: var(--text-muted); }
+    .footer-bottom a { color: var(--accent); text-decoration: none; }
+
+    /* WHATSAPP FLUTUANTE */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 32px; right: 32px;
+      z-index: 8000;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #25d366;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 14px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.03em;
+    }
+    .whatsapp-float:hover {
+      background: #1ebe5d;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(37,211,102,0.5);
+    }
+    .whatsapp-float svg { width: 22px; height: 22px; fill: #fff; flex-shrink: 0; }
+    .whatsapp-label { white-space: nowrap; }
+
+    /* ANIMAÇÕES */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0;
+      height: 2px; background: var(--accent);
+      z-index: 9000; transition: width 0.1s; width: 0%;
+    }
+
+/* RESPONSIVO */
+@media (max-width: 1024px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-cta .btn-outline { display: none; }
+  .hamburger { display: flex; }
+  .services-header { grid-template-columns: 1fr; gap: 24px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: 60px; }
+  .portfolio-header { flex-direction: column; gap: 20px; align-items: flex-start; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .hero-stats { gap: 28px; flex-wrap: wrap; }
+  .about-badge { right: 0; bottom: -10px; }
+  .whatsapp-float { bottom: 20px; right: 20px; padding: 13px 16px; }
+  .whatsapp-label { display: none; }
+  .contact-form { padding: 32px 24px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .credentials { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#home" class="logo">ALEX<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#services">Serviços</a></li>
+        <li><a href="#about">Sobre</a></li>
+        <li><a href="#portfolio">Resultados</a></li>
+        <li><a href="#contact">Contato</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-outline" style="padding:10px 20px; font-size:0.82rem;">Agendar Consulta</a>
+      </div>
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MENU MOBILE -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="toggleMenu()">Serviços</a>
+  <a href="#about" onclick="toggleMenu()">Sobre</a>
+  <a href="#portfolio" onclick="toggleMenu()">Resultados</a>
+  <a href="#contact" onclick="toggleMenu()">Contato</a>
+  <a href="#contact" class="btn btn-primary" onclick="toggleMenu()" style="justify-content:center;">Agendar Consulta</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <span>Musculação & Consultoria Esportiva</span>
+      </div>
+      <h1 class="hero-title">
+        Corpo forte.<br/>
+        Mente focada.<br/>
+        <span class="highlight">Resultado de verdade.</span>
+      </h1>
+      <p class="hero-desc">
+        Programas de musculação personalizados com foco em hipertrofia, condicionamento físico e prevenção de lesões — guiados por mais de 10 anos de vivência em academia.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary"><span>🚀</span> Começar com o Alex</a>
+        <a href="#portfolio" class="btn btn-outline">Ver Transformações</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-number">10+</div>
+          <div class="hero-stat-label">Anos de Vivência em Academias</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">4º</div>
+          <div class="hero-stat-label">Semestre de Educação Física</div>
+        </div>
+        <div>
+          <div class="hero-stat-number">100%</div>
+          <div class="hero-stat-label">Treinos Personalizados</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="services-header">
+      <div class="reveal">
+        <span class="tag">Serviços</span>
+        <h2 class="section-title">O que o Alex faz por você</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="section-sub" style="margin-top: 12px;">
+          Cada treino é construído do zero, alinhado com o seu nível atual, seu objetivo e sua realidade. Nada de fichinha padrão ou treino copiado da internet.
+        </p>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">💪</div>
+        <div class="service-title">Prescrição de Treinos Personalizados</div>
+        <p class="service-desc">Montagem de treinos sob medida com foco em hipertrofia e condicionamento físico, respeitando seu histórico, limitações e objetivos.</p>
+        <div class="service-number">01</div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">📈</div>
+        <div class="service-title">Progressão de Carga e Variáveis</div>
+        <p class="service-desc">Aplicação de progressão inteligente de carga e ajuste de volume, intensidade e frequência para garantir evolução constante e segura.</p>
+        <div class="service-number">02</div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🩺</div>
+        <div class="service-title">Correção Técnica e Prevenção de Lesões</div>
+        <p class="service-desc">Ajustes finos de execução para máxima ativação muscular, melhor rendimento e menor risco de lesões ao longo do processo.</p>
+        <div class="service-number">03</div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🔄</div>
+        <div class="service-title">Acompanhamento Contínuo</div>
+        <p class="service-desc">Monitoramento frequente da sua evolução, ajustes de treino conforme resposta do corpo e suporte para manter a consistência.</p>
+        <div class="service-number">04</div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🎯</div>
+        <div class="service-title">Foco em Resultados Reais</div>
+        <p class="service-desc">Planejamento pensado para resultados sustentáveis, evolução de performance e estética sem promessas milagrosas.</p>
+        <div class="service-number">05</div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">🤝</div>
+        <div class="service-title">Orientação Individualizada</div>
+        <p class="service-desc">Atendimento próximo, linguagem simples e orientação clara para que você entenda o que está fazendo e por que está fazendo.</p>
+        <div class="service-number">06</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-image-wrapper reveal">
+        <div class="about-accent-line"></div>
+        <div class="about-image">
+          <img
+            src="https://i.imgur.com/S3cFKVE.png"
+            alt="Alex Valério — Treinador de Musculação"
+            style="width:100%; height:100%; object-fit: cover; display:block;"
+          />
+        </div>
+        <div class="about-badge">
+          <span class="about-badge-number">10+</span>
+          <div class="about-badge-text">Anos de<br/>Vivência em Academias</div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <span class="tag">Sobre o Alex</span>
+        <h2 class="section-title">Alex Valério — Treinador de Musculação</h2>
+        <div class="divider"></div>
+        <p style="color: var(--text-muted); line-height: 1.85; margin-bottom: 32px;">
+          Sou Alex Valério, formado em Gestão de Recursos Humanos e certificado em Musculação e Fisiculturismo pela CBMF.
+          Apaixonado por treinamento de força, atuo há mais de 10 anos no ambiente de academias.
+          Atualmente curso o 4º semestre de Educação Física e trabalho como instrutor de musculação,
+          ajudando alunos a treinarem com segurança, eficiência e foco em resultados.
+        </p>
+        <div class="credentials">
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Formado em Gestão de Recursos Humanos</span>
+          </div>
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Certificado em Musculação e Fisiculturismo — CBMF</span>
+          </div>
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Graduando em Educação Física — 4º semestre</span>
+          </div>
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Instrutor de musculação em atuação</span>
+          </div>
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Foco em segurança, eficiência e resultados</span>
+          </div>
+          <div class="credential">
+            <div class="credential-dot"></div>
+            <span>Mais de 10 anos de experiência em academias</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="portfolio">
+  <div class="container">
+    <div class="portfolio-header">
+      <div class="reveal">
+        <span class="tag">Resultados</span>
+        <h2 class="section-title">Transformações guiadas pelo Alex</h2>
+        <div class="divider" style="margin-bottom: 0;"></div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <a href="#contact" class="btn btn-outline">Quero ser o próximo →</a>
+      </div>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-card reveal">
+        <div class="portfolio-image">
+          <img
+            src="https://i.imgur.com/tBxvxrB.jpeg"
+            alt="Transformação — Aluno 01"
+            style="width:100%; height:100%; object-fit: cover; display:block;"
+          />
+          <div class="portfolio-tag">Hipertrofia</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-client">Aluno 01</div>
+          <div class="portfolio-result">Protocolo focado em ganho de massa muscular e melhora da definição, com progressão de carga e ajuste de volume ao longo do processo.</div>
+          <div class="portfolio-metrics">
+            <div class="metric">
+              <span class="metric-value">+ massa</span>
+              <span class="metric-label">Hipertrofia</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">Consistência</span>
+              <span class="metric-label">Treino Estruturado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-card reveal reveal-delay-1">
+        <div class="portfolio-image">
+          <img
+            src="https://i.imgur.com/hDimvI0.png"
+            alt="Transformação — Aluno 02"
+            style="width:100%; height:100%; object-fit: cover; display:block;"
+          />
+          <div class="portfolio-tag">Recomposição</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-client">Aluno 02</div>
+          <div class="portfolio-result">Evolução visível na composição corporal com foco em manutenção de massa muscular, melhora de postura e qualidade de execução dos exercícios.</div>
+          <div class="portfolio-metrics">
+            <div class="metric">
+              <span class="metric-value">+ definição</span>
+              <span class="metric-label">Estética</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">+ técnica</span>
+              <span class="metric-label">Execução</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- ESQUERDA: informações -->
+      <div class="reveal">
+        <span class="tag">Contato</span>
+        <h2 class="section-title">Comece seu projeto de corpo com o Alex</h2>
+        <div class="divider"></div>
+        <p class="section-sub">
+          Preencha o formulário e o Alex entra em contato com você em até 24 horas para entender seu objetivo e explicar como funciona o acompanhamento.
+        </p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div>
+              <div class="contact-item-title">Atuação</div>
+              <div class="contact-item-value">Atendimento presencial em academia + possibilidade de orientação online</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📱</div>
+            <div>
+              <div class="contact-item-title">WhatsApp</div>
+              <div class="contact-item-value">
+                <a href="https://wa.me/5511994921239" target="_blank"
+                   style="color: var(--accent); text-decoration: none; font-weight: 500;">
+                  (11) 99492-1239
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">✉️</div>
+            <div>
+              <div class="contact-item-title">E-mail</div>
+              <div class="contact-item-value">
+                <a href="mailto:valerio_treinador@gmail.com"
+                   style="color: var(--accent); text-decoration: none; font-weight: 500;">
+                  valerio_treinador@gmail.com
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div>
+              <div class="contact-item-title">Horários</div>
+              <div class="contact-item-value">A combinar de acordo com sua rotina e disponibilidade de agenda</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- FIM ESQUERDA -->
+
+      <!-- DIREITA: formulário -->
+      <div class="reveal reveal-delay-1">
+        <div class="contact-form" id="contactForm">
+          <div class="form-title">Falar com o Alex</div>
+          <div id="formFields">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Nome</label>
+                <input type="text" class="form-input" placeholder="Seu nome completo" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Idade</label>
+                <input type="number" class="form-input" placeholder="Sua idade" min="16" max="80" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">WhatsApp</label>
+                <input type="tel" class="form-input" placeholder="(11) 99492-1239" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cidade / Academia</label>
+                <input type="text" class="form-input" placeholder="Sua cidade ou academia" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Objetivo Principal</label>
+              <select class="form-select form-input">
+                <option value="" disabled selected>Selecione seu objetivo</option>
+                <option>Hipertrofia (ganho de massa muscular)</option>
+                <option>Condicionamento físico</option>
+                <option>Perda de gordura</option>
+                <option>Recomeço na musculação</option>
+                <option>Outros</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fale um pouco sobre você</label>
+              <textarea class="form-textarea" placeholder="Conte seu histórico de treino, limitações, rotina e o que você espera do acompanhamento..."></textarea>
+            </div>
+            <button class="btn btn-primary form-submit" onclick="submitForm()">
+              <span>✓</span> Enviar mensagem para o Alex
+            </button>
+            <p class="form-note">Sem compromisso · Resposta em até 24h</p>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon">✅</div>
+            <div class="success-title">Mensagem enviada!</div>
+            <p class="success-text">Sua mensagem foi registrada. O Alex vai analisar seu objetivo e entrar em contato em breve.</p>
+          </div>
+        </div>
+      </div>
+      <!-- FIM DIREITA -->
+
+    </div>
+    <!-- FIM contact-grid -->
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">ALEX<span>.</span></a>
+        <p>Treinos personalizados, técnica correta e acompanhamento próximo para você evoluir com segurança e constância.</p>
+        <!-- Botão Instagram grande -->
+        <a href="https://instagram.com/valerio_treinador" target="_blank" rel="noopener noreferrer" class="instagram-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          Siga no Instagram @valerio_treinador
+        </a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#services">Treinos personalizados</a></li>
+          <li><a href="#services">Progressão de carga</a></li>
+          <li><a href="#services">Correção técnica</a></li>
+          <li><a href="#services">Acompanhamento contínuo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#home">Início</a></li>
+          <li><a href="#about">Sobre o Alex</a></li>
+          <li><a href="#portfolio">Resultados</a></li>
+          <li><a href="#contact">Contato</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Alex Valério — Consultoria em Musculação. Todos os direitos reservados.</p>
+      <p>
+  Desenvolvido com 💪 para resultados reais —
+  <a href="https://wa.me/5519989105975"
+     target="_blank"
+     rel="noopener noreferrer"
+     style="color: var(--accent); text-decoration: none; font-weight: 500;">
+    Fit Web Pro
+  </a>
+</p>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLUTUANTE -->
+<a href="https://wa.me/5511994921239"
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener noreferrer"
+   title="Falar com Alex Valério no WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.867-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.345.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+  </svg>
+  <span class="whatsapp-label">Falar com o Alex</span>
+</a>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = `${(scrollTop / docHeight) * 100}%`;
+  });
+
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  revealElements.forEach(el => observer.observe(el));
+
+  function submitForm() {
+    setTimeout(() => {
+      document.getElementById('formFields').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+      window.scrollTo({ top: document.getElementById('contact').offsetTop - 100, behavior: 'smooth' });
+    }, 600);
+  }
+</script>
+
+</body>
+</html>
